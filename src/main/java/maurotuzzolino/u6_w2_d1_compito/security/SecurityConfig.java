@@ -1,29 +1,40 @@
 package maurotuzzolino.u6_w2_d1_compito.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity // Serve per abilitare la configurazione di Spring Security
+@EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private JWTCheckerFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        // Disabilito form login e CSRF (non usati in API REST)
+        // Disabilita login form e CSRF
         httpSecurity.formLogin(formLogin -> formLogin.disable());
         httpSecurity.csrf(csrf -> csrf.disable());
 
-        // Stato senza sessioni (stateless), perché usiamo JWT
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // Per ora apro tutti gli endpoint (poi aggiungeremo restrizioni)
-        httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll());
+        httpSecurity.authorizeHttpRequests(auth -> auth
+                // Permettiamo liberamente accesso a login e registrazione
+                .requestMatchers("/auth/**").permitAll()
+                // Tutto il resto richiede autenticazione
+                .anyRequest().authenticated()
+        );
+        
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
 }
+
