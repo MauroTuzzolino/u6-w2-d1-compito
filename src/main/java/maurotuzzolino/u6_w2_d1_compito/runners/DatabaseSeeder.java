@@ -6,11 +6,10 @@ import maurotuzzolino.u6_w2_d1_compito.repositories.PrenotazioneRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.UtenteRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.ViaggioRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+//@Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final DipendenteRepository dipendenteRepository;
@@ -27,7 +26,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.prenotazioneRepository = prenotazioneRepository;
         this.utenteRepository = utenteRepository;
     }
-    
+
     @Override
     public void run(String... args) throws Exception {
 //        // Dipendenti
