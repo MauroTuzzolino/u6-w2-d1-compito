@@ -2,6 +2,7 @@ package maurotuzzolino.u6_w2_d1_compito.services;
 
 import maurotuzzolino.u6_w2_d1_compito.entities.Dipendente;
 import maurotuzzolino.u6_w2_d1_compito.exceptions.NotFoundException;
+import maurotuzzolino.u6_w2_d1_compito.payloads.NewDipendenteRequest;
 import maurotuzzolino.u6_w2_d1_compito.repositories.DipendenteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +45,18 @@ public class DipendenteService {
             throw new NotFoundException("Dipendente non trovato con id " + id);
         }
         dipendenteRepository.deleteById(id);
+    }
+
+    public Dipendente findByEmail(String email) {
+        return dipendenteRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Dipendente con email " + email + " non trovato"));
+    }
+
+    public Dipendente save(NewDipendenteRequest body) {
+        Dipendente nuovo = new Dipendente(body.getUsername(), body.getNome(), body.getCognome(), body.getEmail(), body.getPassword(), body.getImmagineProfilo());
+        nuovo.setEmail(body.getEmail());
+        nuovo.setPassword(body.getPassword());
+
+        return dipendenteRepository.save(nuovo);
     }
 }

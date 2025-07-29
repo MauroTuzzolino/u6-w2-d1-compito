@@ -34,16 +34,21 @@ public class Dipendente {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank
+    @Column(nullable = false)
+    private String password;
+
     private String immagineProfilo;
 
     public Dipendente() {
     }
 
-    public Dipendente(String username, String nome, String cognome, String email, String immagineProfilo) {
+    public Dipendente(String username, String nome, String cognome, String email, String password, String immagineProfilo) {
         this.username = username;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
+        this.password = password;
         this.immagineProfilo = immagineProfilo;
     }
 
@@ -95,6 +100,14 @@ public class Dipendente {
         this.immagineProfilo = immagineProfilo;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Dipendente{" +
@@ -103,6 +116,7 @@ public class Dipendente {
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", immagineProfilo='" + immagineProfilo + '\'' +
                 '}';
     }

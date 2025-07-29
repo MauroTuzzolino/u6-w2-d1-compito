@@ -1,10 +1,9 @@
 package maurotuzzolino.u6_w2_d1_compito.payloads;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class DipendentePayload {
+public class NewDipendenteRequest {
     @NotBlank
     private String username;
 
@@ -14,25 +13,16 @@ public class DipendentePayload {
     @NotBlank
     private String cognome;
 
-    @NotBlank
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank
-    @Column(nullable = false)
     private String password;
 
     private String immagineProfilo;
 
-    public DipendentePayload(String username, String nome, String cognome, String email, String password, String immagineProfilo) {
-        this.username = username;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.email = email;
-        this.password = password;
-        this.immagineProfilo = immagineProfilo;
-    }
-
+    // Getters e Setters
     public String getUsername() {
         return username;
     }
@@ -65,14 +55,6 @@ public class DipendentePayload {
         this.email = email;
     }
 
-    public String getImmagineProfilo() {
-        return immagineProfilo;
-    }
-
-    public void setImmagineProfilo(String immagineProfilo) {
-        this.immagineProfilo = immagineProfilo;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -81,15 +63,11 @@ public class DipendentePayload {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "DipendentePayload{" +
-                "username='" + username + '\'' +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", immagineProfilo='" + immagineProfilo + '\'' +
-                '}';
+    public String getImmagineProfilo() {
+        return immagineProfilo;
+    }
+
+    public void setImmagineProfilo(String immagineProfilo) {
+        this.immagineProfilo = immagineProfilo;
     }
 }

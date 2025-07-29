@@ -2,7 +2,7 @@ package maurotuzzolino.u6_w2_d1_compito.tools;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import maurotuzzolino.u6_w2_d1_compito.entities.Utente;
+import maurotuzzolino.u6_w2_d1_compito.entities.Dipendente;
 import maurotuzzolino.u6_w2_d1_compito.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,11 +15,11 @@ public class JWTTools {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String createToken(Utente user) {
+    public String createToken(Dipendente dip) {
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
-                .setSubject(String.valueOf(user.getId()))
+                .setSubject(String.valueOf(dip.getId()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
@@ -30,5 +30,16 @@ public class JWTTools {
         } catch (Exception ex) {
             throw new UnauthorizedException("Problemi con il token! Effettuare di nuovo il login!");
         }
+    }
+
+    public Long getIdFromToken(String token) {
+        return Long.parseLong(
+                Jwts.parser()
+                        .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .getSubject()
+        );
     }
 }

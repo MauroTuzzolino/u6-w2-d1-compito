@@ -50,6 +50,7 @@ public class DipendenteController {
                 payload.getNome(),
                 payload.getCognome(),
                 payload.getEmail(),
+                payload.getPassword(),
                 payload.getImmagineProfilo()
         );
         return ResponseEntity.ok(dipendenteService.create(dip));
@@ -62,6 +63,7 @@ public class DipendenteController {
                 payload.getNome(),
                 payload.getCognome(),
                 payload.getEmail(),
+                payload.getPassword(),
                 payload.getImmagineProfilo()
         );
         return ResponseEntity.ok(dipendenteService.update(id, dip));

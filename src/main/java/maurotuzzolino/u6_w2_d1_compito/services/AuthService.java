@@ -1,6 +1,7 @@
+// src/main/java/maurotuzzolino/u6_w2_d1_compito/services/AuthService.java
 package maurotuzzolino.u6_w2_d1_compito.services;
 
-import maurotuzzolino.u6_w2_d1_compito.entities.Utente;
+import maurotuzzolino.u6_w2_d1_compito.entities.Dipendente;
 import maurotuzzolino.u6_w2_d1_compito.exceptions.UnauthorizedException;
 import maurotuzzolino.u6_w2_d1_compito.payloads.LoginRequest;
 import maurotuzzolino.u6_w2_d1_compito.tools.JWTTools;
@@ -11,24 +12,16 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private UtenteService utenteService;
+    private DipendenteService dipendenteService;
 
     @Autowired
     private JWTTools jwtTools;
 
     public String checkCredentialsAndGenerateToken(LoginRequest body) {
-        // 1. Cerco utente per email
-        Utente found = utenteService.findByEmail(body.email());
-
-        // 2. Controllo che la password combaci (NB: qui non è criptata)
-        if (found.getPassword().equals(body.password())) {
-            // 3. Genero il token JWT
-            String accessToken = jwtTools.createToken(found);
-            return accessToken;
-        } else {
-            // 4. Password errata -> eccezione 401
-            throw new UnauthorizedException("Credenziali errate!");
+        Dipendente dip = dipendenteService.findByEmail(body.email());
+        if (dip == null || !dip.getPassword().equals(body.password())) {
+            throw new UnauthorizedException("Credenziali non valide");
         }
+        return jwtTools.createToken(dip);
     }
 }
-
